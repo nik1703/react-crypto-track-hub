@@ -1,13 +1,13 @@
-
+import { Outlet } from 'react-router-dom';
+import Header from './components/Header';
 
 const App = () => {
-
-
 	return (
 		<>
-			<div>
-				App
-			</div>
+			<Header />
+			<main className="bg-[#0F111A]">
+				<Outlet />
+			</main>
 		</>
 	);
 };
