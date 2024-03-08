@@ -11,6 +11,26 @@ const Header = () => {
 		setCurrency(e.target.value);
 	}
 
+	const currenciesList = [
+		{ id: "01", name: 'USD', value: 'usd' },
+		{ id: "02", name: 'EUR', value: 'eur' },
+		{ id: "03", name: "JPY", value: "jpy" },
+		{ id: "04", name: "GBP", value: "gbp" },
+		{ id: "05", name: "AUD", value: "aud" },
+		{ id: "06", name: "CAD", value: "cad" },
+		{ id: "07", name: "CHF", value: "chf" },
+		{ id: "08", name: "CNY", value: "cny" },
+		{ id: "09", name: "SEK", value: "sek" },
+		{ id: "10", name: "NZD", value: "nzd" }
+	];
+
+	const cryptoCurrenciesList = [
+		{ id: "01", name: "BTC", value: "btc" },
+		{ id: "02", name: "ETH", value: "eth" },
+		{ id: "03", name: "BNB", value: "bnb" },
+		{ id: "04", name: "LTC", value: "ltc" }
+	];
+
 	return (
 		<>
 			<header className="m-10 text-2xl">
@@ -52,16 +72,25 @@ const Header = () => {
 									- Fiat -
 								</option>
 								<option value="" disabled></option>
-								<option value="usd">USD</option>
-								<option value="eur">EUR</option>
-								<option value="gbp">GBP</option>
+								{currenciesList.map((currency) => {
+									return (
+										<option key={currency.id} value={currency.value}>
+											{currency.name}
+										</option>
+									);
+								})}
 								<option value="" disabled></option>
 								<option value="" disabled>
 									- Crypto -
 								</option>
 								<option value="" disabled></option>
-								<option value="btc">BTC</option>
-								<option value="eth">ETH</option>
+								{cryptoCurrenciesList.map((currency) => {
+									return (
+										<option key={currency.id} value={currency.value}>
+											{currency.name}
+										</option>
+									);
+								})}
 							</select>
 						</li>
 					</ul>
