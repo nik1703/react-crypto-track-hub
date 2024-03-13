@@ -1,12 +1,10 @@
-import { useContext, useEffect } from 'react';
-import { CryptoContext } from '../context/CryptoContext';
+import { useContext } from 'react';
 import { FavoritesContext } from '../context/FavoritesContext';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { CurrencyContext } from '../context/CurrencyContext';
 
 const CryptoMain = () => {
-	const { cData } = useContext(CryptoContext);
-	const { favorites, addToFavorites, removeFavorite } =
+	const { favorites, addToFavorites, removeFavorite, cData } =
 		useContext(FavoritesContext);
 	const { currency } = useContext(CurrencyContext);
 
