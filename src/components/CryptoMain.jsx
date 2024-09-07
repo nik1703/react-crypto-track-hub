@@ -1,17 +1,35 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { FavoritesContext } from '../context/FavoritesContext';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { CurrencyContext } from '../context/CurrencyContext';
 import Chart from './Chart';
+import Pagination from './Pagination';
 
 const CryptoMain = () => {
 	const { favorites, addToFavorites, removeFavorite, cData } =
 		useContext(FavoritesContext);
 	const { currency } = useContext(CurrencyContext);
+	const [searchTerm, setSearchTerm] = useState('');
+
+	const handleSearch = event => {
+		setSearchTerm(event.target.value);
+	};
+
+	const filteredData = cData.filter(coin =>
+		coin.name.toLowerCase().includes(searchTerm.toLowerCase())
+	);
 
 	return (
 		<>
+			<Pagination />
 			<section className="mx-20">
+				<input
+					type="text"
+					placeholder="Search"
+					value={searchTerm}
+					onChange={handleSearch}
+					className="w-1/4 block mx-auto my-5 p-2 rounded-lg bg-gray-800 text-gray-100"
+				/>
 				{cData ? (
 					<table className="w-full table-auto">
 						<thead className="text-base text-gray-100 border-b border-gray-700">
@@ -31,7 +49,7 @@ const CryptoMain = () => {
 							</tr>
 						</thead>
 						<tbody className="text-center">
-							{cData.map(coin => {
+							{filteredData.map(coin => {
 								return (
 									<tr
 										className="border-b border-gray-700 rounded-3xl"
@@ -133,7 +151,12 @@ const CryptoMain = () => {
 											%
 										</td>
 										<td className="py-3 pl-4">
-											<Chart sparkline={coin.sparkline_in_7d} priceChange={coin.price_change_percentage_7d_in_currency} />
+											<Chart
+												sparkline={coin.sparkline_in_7d}
+												priceChange={
+													coin.price_change_percentage_7d_in_currency
+												}
+											/>
 										</td>
 										<td className="py-6">
 											{new Intl.NumberFormat('en-US', {
