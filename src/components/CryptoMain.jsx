@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { FavoritesContext } from '../context/FavoritesContext';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { CurrencyContext } from '../context/CurrencyContext';
+import Chart from './Chart';
 
 const CryptoMain = () => {
 	const { favorites, addToFavorites, removeFavorite, cData } =
@@ -131,7 +132,9 @@ const CryptoMain = () => {
 											)}
 											%
 										</td>
-										<td className="py-6">Graph</td>
+										<td className="py-3 pl-4">
+											<Chart sparkline={coin.sparkline_in_7d} priceChange={coin.price_change_percentage_7d_in_currency} />
+										</td>
 										<td className="py-6">
 											{new Intl.NumberFormat('en-US', {
 												style: 'currency',

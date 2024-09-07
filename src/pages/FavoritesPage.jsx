@@ -6,8 +6,7 @@ export default function FavPage() {
 	
 
 	return (
-		<div>
-			<h2 className="text-xl pt-10">FavPage</h2>
+		<div className="py-10">
 			<CryptoFavorties />
 		</div>
 	)
