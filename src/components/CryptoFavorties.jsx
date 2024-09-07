@@ -1,35 +1,34 @@
 import { useContext, useState } from 'react';
-import { FavoritesContext } from '../context/FavoritesContext';
+import { CryptoContext } from '../context/CryptoContext';
 import { FaRegStar, FaStar } from 'react-icons/fa';
-import { CurrencyContext } from '../context/CurrencyContext';
 import Chart from './Chart';
 
 const CryptoFavorties = () => {
-	const { cData, addToFavorites, removeFavorite, dFavorites } =
-		useContext(FavoritesContext);
-	const { currency } = useContext(CurrencyContext);
+	const { cData, addToFavorites, removeFavorite, dFavorites, currency } =
+		useContext(CryptoContext);
 	const [searchTerm, setSearchTerm] = useState('');
 
 	const handleSearch = event => {
 		setSearchTerm(event.target.value);
 	};
 
-	const filteredData = dFavorites.filter(coin =>
-		coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-		coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+	const filteredData = dFavorites.filter(
+		coin =>
+			coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
 	return (
 		<>
 			<section className="mx-20">
-			<input
+				<input
 					type="text"
 					placeholder="Search"
 					value={searchTerm}
 					onChange={handleSearch}
 					className="w-1/4 block mx-auto my-5 p-2 rounded-lg bg-gray-800 text-gray-100"
 				/>
-				{cData ? (
+				{cData.length ? (
 					<table className="w-full table-auto">
 						<thead className="text-base text-gray-100 border-b border-gray-700">
 							<tr>
@@ -48,7 +47,7 @@ const CryptoFavorties = () => {
 							</tr>
 						</thead>
 						<tbody className="text-center">
-							{filteredData.map((coin) => {
+							{filteredData.map(coin => {
 								return (
 									<tr
 										className="border-b border-gray-700 rounded-3xl"
@@ -56,7 +55,7 @@ const CryptoFavorties = () => {
 									>
 										<td className="py-6 flex justify-center items-center">
 											{dFavorites.some(
-												(favorite) => favorite.id == coin.id
+												favorite => favorite.id == coin.id
 											) ? (
 												<FaStar
 													className="size-6 hover:text-[#5EBC67] cursor-pointer text-[#5EBC67]"
@@ -150,7 +149,12 @@ const CryptoFavorties = () => {
 											%
 										</td>
 										<td className="py-3 pl-4">
-										<Chart sparkline={coin.sparkline_in_7d} priceChange={coin.price_change_percentage_7d_in_currency} />
+											<Chart
+												sparkline={coin.sparkline_in_7d}
+												priceChange={
+													coin.price_change_percentage_7d_in_currency
+												}
+											/>
 										</td>
 										<td className="py-6">
 											{new Intl.NumberFormat('en-US', {
@@ -176,7 +180,9 @@ const CryptoFavorties = () => {
 							})}
 						</tbody>
 					</table>
-				) : undefined}
+				) : (
+					<div className="h-screen text-center text-3xl">Loading...</div>
+				)}
 			</section>
 		</>
 	);

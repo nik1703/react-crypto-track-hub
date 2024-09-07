@@ -1,23 +1,30 @@
-import { useContext, useState } from 'react';
-import { FavoritesContext } from '../context/FavoritesContext';
+import { useContext, useState, useMemo } from 'react';
+import { CryptoContext } from '../context/CryptoContext';
 import { FaRegStar, FaStar } from 'react-icons/fa';
-import { CurrencyContext } from '../context/CurrencyContext';
 import Chart from './Chart';
 import Pagination from './Pagination';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const CryptoMain = () => {
-	const { favorites, addToFavorites, removeFavorite, cData } =
-		useContext(FavoritesContext);
-	const { currency } = useContext(CurrencyContext);
+	const { favorites, addToFavorites, removeFavorite, cData, currency } =
+		useContext(CryptoContext);
 	const [searchTerm, setSearchTerm] = useState('');
+	const handleAddToFavorites = id => () => addToFavorites(id);
+	const handleRemoveFavorite = id => () => removeFavorite(id);
 
 	const handleSearch = event => {
 		setSearchTerm(event.target.value);
 	};
 
-	const filteredData = cData.filter(coin =>
-		coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-		coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+	const filteredData = useMemo(
+		() =>
+			cData.filter(
+				coin =>
+					coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+					coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+			),
+		[cData, searchTerm]
 	);
 
 	return (
@@ -31,7 +38,7 @@ const CryptoMain = () => {
 					onChange={handleSearch}
 					className="w-1/4 block mx-auto my-5 p-2 rounded-lg bg-gray-800 text-gray-100"
 				/>
-				{cData ? (
+				{cData.length ? (
 					<table className="w-full table-auto">
 						<thead className="text-base text-gray-100 border-b border-gray-700">
 							<tr>
@@ -51,22 +58,23 @@ const CryptoMain = () => {
 						</thead>
 						<tbody className="text-center">
 							{filteredData.map(coin => {
+								const isFavorite = favorites.some(
+									favorite => favorite == coin.id
+								);
 								return (
 									<tr
 										className="border-b border-gray-700 rounded-3xl"
 										key={coin.id}
 									>
 										<td className="py-6 flex justify-center items-center">
-											{favorites.some(
-												favorite => favorite == coin.id
-											) ? (
+											{isFavorite ? (
 												<FaStar
 													className="size-6 hover:text-[#5EBC67] cursor-pointer text-[#5EBC67]"
-													onClick={() => removeFavorite(coin.id)}
+													onClick={handleRemoveFavorite(coin.id)}
 												/>
 											) : (
 												<FaRegStar
-													onClick={() => addToFavorites(coin.id)}
+													onClick={handleAddToFavorites(coin.id)}
 													className="size-6 hover:text-[#5EBC67] cursor-pointer"
 												/>
 											)}
@@ -183,7 +191,9 @@ const CryptoMain = () => {
 							})}
 						</tbody>
 					</table>
-				) : undefined}
+				) : (
+					<div className="h-screen text-center text-3xl">Loading...</div>
+				)}
 			</section>
 		</>
 	);

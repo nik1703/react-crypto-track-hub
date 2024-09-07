@@ -1,22 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
-import { CurrencyProvider } from './context/CurrencyContext';
-// import { CryptoProvider } from './context/CryptoContext';
-import { FavoritesProvider } from './context/FavoritesContext';
+import { CryptoProvider } from './context/CryptoContext';
 
 const App = () => {
 	return (
 		<>
-			<CurrencyProvider>
-				{/* <CryptoProvider> */}
-					<FavoritesProvider>
-						<Header />
-						<main className="bg-[#0F111A]">
-							<Outlet />
-						</main>
-					</FavoritesProvider>
-				{/* </CryptoProvider> */}
-			</CurrencyProvider>
+			<CryptoProvider>
+				<Header />
+				<main className="bg-[#0F111A]">
+					<Outlet />
+				</main>
+			</CryptoProvider>
 		</>
 	);
 };
