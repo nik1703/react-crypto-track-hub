@@ -2,14 +2,17 @@ import { useContext, useState, useMemo } from 'react';
 import { CryptoContext } from '../context/CryptoContext';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import Chart from './Chart';
-import Pagination from './Pagination';
+import { Pagination } from '@mui/material';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const CryptoMain = () => {
 	const { favorites, addToFavorites, removeFavorite, cData, currency } =
 		useContext(CryptoContext);
 	const [searchTerm, setSearchTerm] = useState('');
+	const [currentPage, setCurrentPage] = useState(1);
+	const [loadedImages, setLoadedImages] = useState({});
 	const handleAddToFavorites = id => () => addToFavorites(id);
 	const handleRemoveFavorite = id => () => removeFavorite(id);
 
@@ -29,7 +32,6 @@ const CryptoMain = () => {
 
 	return (
 		<>
-			<Pagination />
 			<section className="mx-20">
 				<input
 					type="text"
@@ -57,143 +59,202 @@ const CryptoMain = () => {
 							</tr>
 						</thead>
 						<tbody className="text-center">
-							{filteredData.map(coin => {
-								const isFavorite = favorites.some(
-									favorite => favorite == coin.id
-								);
-								return (
-									<tr
-										className="border-b border-gray-700 rounded-3xl"
-										key={coin.id}
-									>
-										<td className="py-6 flex justify-center items-center">
-											{isFavorite ? (
-												<FaStar
-													className="size-6 hover:text-[#5EBC67] cursor-pointer text-[#5EBC67]"
-													onClick={handleRemoveFavorite(coin.id)}
+							{filteredData
+								.slice(
+									(currentPage - 1) * 25,
+									(currentPage - 1) * 25 + 25
+								)
+								.map(coin => {
+									const isFavorite = favorites.some(
+										favorite => favorite == coin.id
+									);
+									return (
+										<tr
+											className="border-b border-gray-700 rounded-3xl"
+											key={coin.id}
+										>
+											<td className="py-6 flex justify-center items-center">
+												{isFavorite ? (
+													<FaStar
+														className="size-6 hover:text-[#5EBC67] cursor-pointer text-[#5EBC67]"
+														onClick={handleRemoveFavorite(
+															coin.id
+														)}
+													/>
+												) : (
+													<FaRegStar
+														onClick={handleAddToFavorites(
+															coin.id
+														)}
+														className="size-6 hover:text-[#5EBC67] cursor-pointer"
+													/>
+												)}
+											</td>
+											<td className="py-6">
+												{coin.market_cap_rank}
+											</td>
+											<td className="py-6 text-left pl-12 flex">
+												<LazyLoadImage
+													src={coin.image}
+													alt={coin.id}
+													effect="blur"
+													className="h-6 w-6"
+													onLoad={() =>
+														setLoadedImages(prevState => ({
+															...prevState,
+															[coin.id]: true,
+														}))
+													}
 												/>
-											) : (
-												<FaRegStar
-													onClick={handleAddToFavorites(coin.id)}
-													className="size-6 hover:text-[#5EBC67] cursor-pointer"
-												/>
-											)}
-										</td>
-										<td className="py-6">{coin.market_cap_rank}</td>
-										<td className="py-6 text-left pl-12 flex">
-											<img
-												src={coin.image}
-												alt={coin.id}
-												className="h-6 w-6"
-											/>{' '}
-											&nbsp;&nbsp;&nbsp;
-											{coin.name} &nbsp;&nbsp;{' '}
-											<span className="text-gray-500">
-												{' '}
-												{coin.symbol.toUpperCase()}{' '}
-											</span>
-										</td>
-										<td className="py-6">
-											{new Intl.NumberFormat('en-US', {
-												style: 'currency',
-												currency: currency,
-												minimumFractionDigits: 2,
-												maximumFractionDigits:
-													coin.current_price < 1 ? 7 : 2,
-											}).format(coin.current_price)}
-										</td>
+												{!loadedImages[coin.id] && (
+													<CircularProgress
+														disableShrink
+														size={20}
+														sx={{
+															color: '#5EBC67',
+														}}
+													/>
+												)}{' '}
+												&nbsp;&nbsp;&nbsp;
+												{coin.name} &nbsp;&nbsp;{' '}
+												<span className="text-gray-500">
+													{' '}
+													{coin.symbol.toUpperCase()}{' '}
+												</span>
+											</td>
+											<td className="py-6">
+												{new Intl.NumberFormat('en-US', {
+													style: 'currency',
+													currency: currency,
+													minimumFractionDigits: 2,
+													maximumFractionDigits:
+														coin.current_price < 1 ? 7 : 2,
+												}).format(coin.current_price)}
+											</td>
 
-										<td
-											className={
-												coin.price_change_percentage_1h_in_currency
-													.toFixed(2)
-													.startsWith('-')
-													? 'text-red-600 py-6'
-													: 'text-[#61e72c] py-6'
-											}
-										>
-											{coin.price_change_percentage_1h_in_currency.toFixed(
-												2
-											)}
-											%
-										</td>
-										<td
-											className={
-												coin.price_change_percentage_24h_in_currency
-													.toFixed(2)
-													.startsWith('-')
-													? 'text-red-600 py-6'
-													: 'text-[#61e72c] py-6'
-											}
-										>
-											{coin.price_change_percentage_24h_in_currency.toFixed(
-												2
-											)}
-											%
-										</td>
-										<td
-											className={
-												coin.price_change_percentage_7d_in_currency
-													.toFixed(2)
-													.startsWith('-')
-													? 'text-red-600 py-6'
-													: 'text-[#61e72c] py-6'
-											}
-										>
-											{coin.price_change_percentage_7d_in_currency.toFixed(
-												2
-											)}
-											%
-										</td>
-										<td
-											className={
-												coin.price_change_percentage_30d_in_currency
-													.toFixed(2)
-													.startsWith('-')
-													? 'text-red-600 py-6'
-													: 'text-[#61e72c] py-6'
-											}
-										>
-											{coin.price_change_percentage_30d_in_currency.toFixed(
-												2
-											)}
-											%
-										</td>
-										<td className="py-3 pl-4">
-											<Chart
-												sparkline={coin.sparkline_in_7d}
-												priceChange={
-													coin.price_change_percentage_7d_in_currency
+											<td
+												className={
+													coin.price_change_percentage_1h_in_currency
+														? coin.price_change_percentage_1h_in_currency
+																.toFixed(2)
+																.startsWith('-')
+															? 'text-red-600 py-6'
+															: 'text-[#61e72c] py-6'
+														: ''
 												}
-											/>
-										</td>
-										<td className="py-6">
-											{new Intl.NumberFormat('en-US', {
-												style: 'currency',
-												currency: currency,
-												maximumFractionDigits: 0,
-											}).format(coin.market_cap)}
-										</td>
-										<td className="py-6">
-											{new Intl.NumberFormat('en-US', {
-												style: 'currency',
-												currency: currency,
-												maximumFractionDigits: 0,
-											}).format(coin.total_volume)}
-										</td>
-										<td className="py-6">
-											{new Intl.NumberFormat('en-US', {
-												maximumFractionDigits: 0,
-											}).format(coin.circulating_supply)}
-										</td>
-									</tr>
-								);
-							})}
+											>
+												{coin.price_change_percentage_1h_in_currency
+													? coin.price_change_percentage_1h_in_currency.toFixed(
+															2
+													  )
+													: 'N/A'}
+												%
+											</td>
+											<td
+												className={
+													coin.price_change_percentage_24h_in_currency
+														? coin.price_change_percentage_24h_in_currency
+																.toFixed(2)
+																.startsWith('-')
+															? 'text-red-600 py-6'
+															: 'text-[#61e72c] py-6'
+														: ''
+												}
+											>
+												{coin.price_change_percentage_24h_in_currency
+													? coin.price_change_percentage_24h_in_currency.toFixed(
+															2
+													  )
+													: 'N/A'}
+												%
+											</td>
+											<td
+												className={
+													coin.price_change_percentage_7d_in_currency
+														? coin.price_change_percentage_7d_in_currency
+																.toFixed(2)
+																.startsWith('-')
+															? 'text-red-600 py-6'
+															: 'text-[#61e72c] py-6'
+														: ''
+												}
+											>
+												{coin.price_change_percentage_7d_in_currency
+													? coin.price_change_percentage_7d_in_currency.toFixed(
+															2
+													  )
+													: 'N/A'}
+												%
+											</td>
+											<td
+												className={
+													coin.price_change_percentage_30d_in_currency
+														? coin.price_change_percentage_30d_in_currency
+																.toFixed(2)
+																.startsWith('-')
+															? 'text-red-600 py-6'
+															: 'text-[#61e72c] py-6'
+														: ''
+												}
+											>
+												{coin.price_change_percentage_30d_in_currency
+													? coin.price_change_percentage_30d_in_currency.toFixed(
+															2
+													  )
+													: 'N/A'}
+												%
+											</td>
+											<td className="py-3 pl-4">
+												<Chart
+													sparkline={coin.sparkline_in_7d}
+													priceChange={
+														coin.price_change_percentage_7d_in_currency
+													}
+												/>
+											</td>
+											<td className="py-6">
+												{new Intl.NumberFormat('en-US', {
+													style: 'currency',
+													currency: currency,
+													maximumFractionDigits: 0,
+												}).format(coin.market_cap)}
+											</td>
+											<td className="py-6">
+												{new Intl.NumberFormat('en-US', {
+													style: 'currency',
+													currency: currency,
+													maximumFractionDigits: 0,
+												}).format(coin.total_volume)}
+											</td>
+											<td className="py-6">
+												{new Intl.NumberFormat('en-US', {
+													maximumFractionDigits: 0,
+												}).format(coin.circulating_supply)}
+											</td>
+										</tr>
+									);
+								})}
 						</tbody>
 					</table>
 				) : (
 					<div className="h-screen text-center text-3xl">Loading...</div>
 				)}
+				<div>
+					<Pagination
+						count={Math.ceil(filteredData.length / 25)}
+						shape="rounded"
+						sx={{
+							'& .MuiPaginationItem-root': {
+								color: '#fff',
+							},
+						}}
+						className="flex justify-center my-5"
+						onChange={(event, value) => {
+							setCurrentPage(value);
+							window.scrollTo(0, 0);
+						}}
+					/>
+				</div>
 			</section>
 		</>
 	);

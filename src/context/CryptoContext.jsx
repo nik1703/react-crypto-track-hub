@@ -67,7 +67,7 @@ export const CryptoProvider = ({ children }) => {
 			if (isFetching || !currency) return; // If we're already fetching, don't start a new fetch
 
 			setIsFetching(true);
-			const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=25&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d%2C30d&locale=en&precision=full&x_cg_demo_api_key=${
+			const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d%2C30d&locale=en&precision=full&x_cg_demo_api_key=${
 				import.meta.env.VITE_API_KEY
 			}`;
 			const maxRetries = 3;
