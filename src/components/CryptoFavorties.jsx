@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { FavoritesContext } from '../context/FavoritesContext';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { CurrencyContext } from '../context/CurrencyContext';
@@ -8,10 +8,27 @@ const CryptoFavorties = () => {
 	const { cData, addToFavorites, removeFavorite, dFavorites } =
 		useContext(FavoritesContext);
 	const { currency } = useContext(CurrencyContext);
+	const [searchTerm, setSearchTerm] = useState('');
+
+	const handleSearch = event => {
+		setSearchTerm(event.target.value);
+	};
+
+	const filteredData = dFavorites.filter(coin =>
+		coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+		coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+	);
 
 	return (
 		<>
 			<section className="mx-20">
+			<input
+					type="text"
+					placeholder="Search"
+					value={searchTerm}
+					onChange={handleSearch}
+					className="w-1/4 block mx-auto my-5 p-2 rounded-lg bg-gray-800 text-gray-100"
+				/>
 				{cData ? (
 					<table className="w-full table-auto">
 						<thead className="text-base text-gray-100 border-b border-gray-700">
@@ -31,7 +48,7 @@ const CryptoFavorties = () => {
 							</tr>
 						</thead>
 						<tbody className="text-center">
-							{dFavorites.map((coin) => {
+							{filteredData.map((coin) => {
 								return (
 									<tr
 										className="border-b border-gray-700 rounded-3xl"
