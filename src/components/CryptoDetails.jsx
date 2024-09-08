@@ -32,10 +32,6 @@ const CryptoDetails = () => {
 			fetchCoin();
 		}
 	}, [id, currency]);
-	console.log(coin);
-
-	console.log('id', id);
-	console.log('currency', currency);
 
 	if (!coin) return 'Loading...';
 
@@ -49,7 +45,11 @@ const CryptoDetails = () => {
 		yaxis: {
 			labels: {
 				formatter: function (value) {
-					return value.toFixed(2);
+					let decimalPlaces =
+						value < 1 ? Math.abs(Math.floor(Math.log10(value))) + 2 : 2;
+					decimalPlaces = Math.min(Math.max(decimalPlaces, 0), 100);
+
+					return value.toFixed(decimalPlaces);
 				},
 			},
 		},
@@ -146,7 +146,6 @@ const CryptoDetails = () => {
 						<p>
 							Total Supply: {formatStats(coin.market_data.total_supply)}
 						</p>
-						<p>Max Supply: {formatStats(coin.market_data.max_supply)}</p>
 						<p>
 							All Time High:{' '}
 							{formatCurrency(coin.market_data.ath[currency])}

@@ -6,6 +6,7 @@ import { Pagination } from '@mui/material';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
 
 const CryptoFavorties = () => {
 	const { cData, addToFavorites, removeFavorite, dFavorites, currency } =
@@ -13,6 +14,17 @@ const CryptoFavorties = () => {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [loadedImages, setLoadedImages] = useState({});
+	const navigate = useNavigate();
+
+	const handleAddToFavorites = (coin) => (event) => {
+		event.stopPropagation();
+		addToFavorites(coin);
+  };
+  
+  const handleRemoveFavorite = (id) => (event) => {
+		event.stopPropagation();
+		removeFavorite(id);
+  };
 
 	const handleSearch = event => {
 		setSearchTerm(event.target.value);
@@ -61,23 +73,22 @@ const CryptoFavorties = () => {
 								.map(coin => {
 									return (
 										<tr
-											className="border-b border-gray-700 rounded-3xl"
-											key={coin.id}
+										className="border-b border-gray-700 rounded-3xl hover:cursor-pointer hover:scale-105"
+										key={coin.id}
+										onClick={() => navigate(`/coin/${coin.id}`)}
 										>
 											<td className="py-6 flex justify-center items-center">
 												{dFavorites.some(
 													favorite => favorite.id == coin.id
 												) ? (
 													<FaStar
-														className="size-6 hover:text-[#5EBC67] cursor-pointer text-[#5EBC67]"
-														onClick={() =>
-															removeFavorite(coin.id)
-														}
+													className="size-6 hover:text-[#5EBC67] cursor-pointer text-[#5EBC67]"
+													onClick={(event) => handleRemoveFavorite(coin.id)(event)}
 													/>
 												) : (
 													<FaRegStar
-														onClick={() => addToFavorites(coin)}
-														className="size-6 hover:text-[#5EBC67] cursor-pointer"
+													onClick={(event) => handleAddToFavorites(coin)(event)}
+													className="size-6 hover:text-[#5EBC67] cursor-pointer"
 													/>
 												)}
 											</td>
