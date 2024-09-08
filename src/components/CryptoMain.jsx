@@ -15,8 +15,15 @@ const CryptoMain = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [loadedImages, setLoadedImages] = useState({});
 	const navigate = useNavigate();
-	const handleAddToFavorites = id => () => addToFavorites(id);
-	const handleRemoveFavorite = id => () => removeFavorite(id);
+	const handleAddToFavorites = id => event => {
+		event.stopPropagation();
+		addToFavorites(id);
+	};
+
+	const handleRemoveFavorite = id => event => {
+		event.stopPropagation();
+		removeFavorite(id);
+	};
 
 	const handleSearch = event => {
 		setSearchTerm(event.target.value);
@@ -80,15 +87,19 @@ const CryptoMain = () => {
 												{isFavorite ? (
 													<FaStar
 														className="size-6 hover:text-[#5EBC67] cursor-pointer text-[#5EBC67]"
-														onClick={handleRemoveFavorite(
-															coin.id
-														)}
+														onClick={event =>
+															handleRemoveFavorite(coin.id)(
+																event
+															)
+														}
 													/>
 												) : (
 													<FaRegStar
-														onClick={handleAddToFavorites(
-															coin.id
-														)}
+														onClick={event =>
+															handleAddToFavorites(coin.id)(
+																event
+															)
+														}
 														className="size-6 hover:text-[#5EBC67] cursor-pointer"
 													/>
 												)}

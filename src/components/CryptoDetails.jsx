@@ -74,7 +74,7 @@ const CryptoDetails = () => {
 		const className = formattedValue.startsWith('-')
 			? 'text-red-600 py-2 text-center flex items-center justify-center'
 			: 'text-[#61e72c] py-2 text-center flex items-center justify-center';
-		return <td className={className}>{formattedValue}%</td>;
+		return <p className={className}>{formattedValue}%</p>;
 	}
 
 	function formatCurrency(value) {
