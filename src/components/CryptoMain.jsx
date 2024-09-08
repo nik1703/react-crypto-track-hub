@@ -6,6 +6,7 @@ import { Pagination } from '@mui/material';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
 
 const CryptoMain = () => {
 	const { favorites, addToFavorites, removeFavorite, cData, currency } =
@@ -13,6 +14,7 @@ const CryptoMain = () => {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [loadedImages, setLoadedImages] = useState({});
+	const navigate = useNavigate();
 	const handleAddToFavorites = id => () => addToFavorites(id);
 	const handleRemoveFavorite = id => () => removeFavorite(id);
 
@@ -70,8 +72,9 @@ const CryptoMain = () => {
 									);
 									return (
 										<tr
-											className="border-b border-gray-700 rounded-3xl"
+											className="border-b border-gray-700 rounded-3xl hover:cursor-pointer hover:scale-105"
 											key={coin.id}
+											onClick={() => navigate(`/coin/${coin.id}`)}
 										>
 											<td className="py-6 flex justify-center items-center">
 												{isFavorite ? (

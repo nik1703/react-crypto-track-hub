@@ -3,6 +3,7 @@ import App from './App.jsx';
 import './index.scss';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HomePage, NewsPage, FavoritesPage, NotFoundPage } from './pages/';
+import CryptoDetails from './components/CryptoDetails';
 
 const router = createBrowserRouter([
 	{
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
 			{
 				path: '/favorites',
 				element: <FavoritesPage />
+			},
+			{
+				path: '/coin/:id',
+				element: <CryptoDetails />
 			}
 		]
 	}

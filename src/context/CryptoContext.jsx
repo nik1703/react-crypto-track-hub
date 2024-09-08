@@ -34,15 +34,6 @@ export const CryptoProvider = ({ children }) => {
 		localStorage.setItem('currency', currency);
 	}, [currency]);
 
-	useEffect(() => {
-		const favoriteCoins = JSON.parse(
-			localStorage.getItem('favorite-coins') || '[]'
-		);
-		if (favoriteCoins) {
-			setFavorites(favoriteCoins);
-		}
-	}, []);
-
 	const saveToLocalStorage = items => {
 		localStorage.setItem('favorite-coins', JSON.stringify(items));
 	};
@@ -64,7 +55,7 @@ export const CryptoProvider = ({ children }) => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (isFetching || !currency) return; // If we're already fetching, don't start a new fetch
+			if (isFetching || !currency) return;
 
 			setIsFetching(true);
 			const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d%2C30d&locale=en&precision=full&x_cg_demo_api_key=${
@@ -77,7 +68,7 @@ export const CryptoProvider = ({ children }) => {
 				try {
 					const response = await axios.get(url);
 					setCData(response.data);
-					break; // If the fetch is successful, break the loop
+					break;
 				} catch (error) {
 					console.error(`Error on attempt ${retries + 1}:`, error);
 					retries++;
@@ -95,12 +86,12 @@ export const CryptoProvider = ({ children }) => {
 			setIsFetching(false);
 		};
 
-		fetchData(); // Call it immediately
+		fetchData();
 
-		const intervalId = setInterval(fetchData, 60000); // Then every 60 seconds
+		// const intervalId = setInterval(fetchData, 60000);
 
-		return () => clearInterval(intervalId); // Cleanup on unmount
-	}, [currency, isFetching]);
+		// return () => clearInterval(intervalId);
+	}, [currency]);
 
 	useEffect(() => {
 		const filteredFavorites = cData.filter(coin => {
