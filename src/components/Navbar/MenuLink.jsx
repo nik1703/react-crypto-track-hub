@@ -11,8 +11,9 @@ const MenuLink = ({ children, path, id }) => {
 						: 'text-gray-300'
 				}
 			>
-				{/* <li className="bg-[#0F111A] p-4 px-14 rounded-lg">{children}</li> */}
-				<li className={id === "03" ? "bg-[#0F111A] p-4 px-10 rounded-lg" : "bg-[#0F111A] p-4 px-14 rounded-lg"} >{children}</li>
+				<li className={id === "03" ? "bg-[#0F111A] p-2 sm:p-4 px-2 sm:px-4 lg:px-6 xl:px-10 rounded-lg text-base" : "bg-[#0F111A] p-2 sm:p-4 px-6 sm:px-8 lg:px-10 xl:px-14 rounded-lg text-base"} >
+					{children}
+				</li>
 			</NavLink>
 		</>
 	);

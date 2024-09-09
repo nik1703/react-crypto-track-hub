@@ -9,7 +9,7 @@ const Navbar = () => {
 
 	return (
 		<>
-			<ul className="flex items-center justify-center gap-10 px-4">
+			<ul className="flex flex-row items-center justify-center gap-4 sm:gap-10 px-4 sm:px-0">
 				{links.map(link => {
 					return (
 						<MenuLink key={link.id} path={link.path} id={link.id} >

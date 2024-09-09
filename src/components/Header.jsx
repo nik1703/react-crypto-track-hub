@@ -33,67 +33,49 @@ const Header = () => {
 
 	return (
 		<>
-			<header className="m-10 text-2xl">
-				<nav className="grid grid-cols-3 grid-">
-					<h1>
+			<header className="m-4 sm:m-10 text-2xl">
+				<nav className="flex flex-col lg:flex-row justify-between items-center gap-4">
+					<div className="flex justify-center sm:justify-start mb-4 sm:mb-0 lg:order-1">
 						<NavLink to="/">
 							<img src={logo} alt="logo" className="h-20" />
 						</NavLink>
-					</h1>
-					<ul className="flex items-center justify-center gap-10 px-4">
+					</div>
+					<div className="flex justify-center sm:justify-end mb-4 sm:mb-0 lg:order-3">
+						<select
+							name="currency"
+							id="currency"
+							className="bg-[#0F111A] py-2 sm:py-4 px-2 sm:px-4 rounded-lg focus:outline-[#5EBC67] outline-none text-gray-300 text-sm sm:text-base w-24 sm:w-32 text-center cursor-pointer"
+							value={currency}
+							onChange={currencyChange()}
+						>
+							<option value="" disabled>
+								- Fiat -
+							</option>
+							<option value="" disabled></option>
+							{currenciesList.map(currency => {
+								return (
+									<option key={currency.id} value={currency.value}>
+										{currency.name}
+									</option>
+								);
+							})}
+							<option value="" disabled></option>
+							<option value="" disabled>
+								- Crypto -
+							</option>
+							<option value="" disabled></option>
+							{cryptoCurrenciesList.map(currency => {
+								return (
+									<option key={currency.id} value={currency.value}>
+										{currency.name}
+									</option>
+								);
+							})}
+						</select>
+					</div>
+					<div className="flex justify-center lg:order-2">
 						<Navbar />
-						{/* <NavLink to="/" className={({ isActive }) => isActive ? "text-[#5EBC67] border-[#5EBC67] border-b-4 rounded-2xl" : "text-gray-300"}>
-					<li className='bg-[#0F111A] p-4 px-14 rounded-lg'>
-						Home
-					</li>
-					</NavLink>
-					<NavLink to="/news" className={({ isActive }) => isActive ? "text-[#5EBC67] border-[#5EBC67] border-b-4 rounded-2xl" : "text-gray-300"}>
-					<li className='bg-[#0F111A] p-4 px-14 rounded-lg'>
-						News
-					</li>
-					</NavLink>
-					<NavLink to="/favorites" className={({ isActive }) => isActive ? "text-[#5EBC67] border-[#5EBC67] border-b-4 rounded-2xl" : "text-gray-300"}>
-					<li className='bg-[#0F111A] p-4 px-10 rounded-lg'>
-						Favorites
-					</li>
-					</NavLink> */}
-					</ul>
-					<ul className="flex items-center justify-end">
-						<li>
-							{/* evtl darkmode und change currency? */}
-							<select
-								name="currency"
-								id="currency"
-								className="bg-[#0F111A] py-4 px-2 rounded-lg focus:outline-[#5EBC67] outline-none text-gray-300 w-24 text-center cursor-pointer"
-								value={currency}
-								onChange={currencyChange()}
-							>
-								<option value="" disabled>
-									- Fiat -
-								</option>
-								<option value="" disabled></option>
-								{currenciesList.map(currency => {
-									return (
-										<option key={currency.id} value={currency.value}>
-											{currency.name}
-										</option>
-									);
-								})}
-								<option value="" disabled></option>
-								<option value="" disabled>
-									- Crypto -
-								</option>
-								<option value="" disabled></option>
-								{cryptoCurrenciesList.map(currency => {
-									return (
-										<option key={currency.id} value={currency.value}>
-											{currency.name}
-										</option>
-									);
-								})}
-							</select>
-						</li>
-					</ul>
+					</div>
 				</nav>
 			</header>
 		</>
