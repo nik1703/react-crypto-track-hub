@@ -8,6 +8,7 @@ const CryptoDetails = () => {
 	const { id } = useParams();
 	const [coin, setCoin] = useState(null);
 	const [chartData, setChartData] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const { currency } = useContext(CryptoContext);
 
 	useEffect(() => {
@@ -26,6 +27,7 @@ const CryptoDetails = () => {
 					value: price[1],
 				}))
 			);
+			setLoading(false);
 		};
 
 		if (id && currency) {
@@ -33,7 +35,9 @@ const CryptoDetails = () => {
 		}
 	}, [id, currency]);
 
-	if (!coin) return 'Loading...';
+	if (loading) {
+		return <div className="h-screen text-center text-3xl">Loading...</div>;
+	}
 
 	const options = {
 		chart: {

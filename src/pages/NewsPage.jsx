@@ -1,9 +1,11 @@
+import CryptoNews from "../components/CryptoNews";
+
 const NewsPage = () => {
 	return (
 		<>
-			<div>
-				<h2 className="text-xl pt-10">NewsPage</h2>
-			</div>
+			<div className="py-10">
+			<CryptoNews />
+		</div>
 		</>
 	);
 };
