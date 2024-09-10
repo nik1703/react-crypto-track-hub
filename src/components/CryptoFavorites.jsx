@@ -1,4 +1,4 @@
-import { useContext, useState, useMemo } from 'react';
+import { useContext, useState } from 'react';
 import { CryptoContext } from '../context/CryptoContext';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import Chart from './Chart';
@@ -8,16 +8,17 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 
-const CryptoMain = () => {
-	const { favorites, addToFavorites, removeFavorite, cData, currency } =
+const CryptoFavorties = () => {
+	const { cData, addToFavorites, removeFavorite, dFavorites, currency } =
 		useContext(CryptoContext);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [loadedImages, setLoadedImages] = useState({});
 	const navigate = useNavigate();
-	const handleAddToFavorites = id => event => {
+
+	const handleAddToFavorites = coin => event => {
 		event.stopPropagation();
-		addToFavorites(id);
+		addToFavorites(coin);
 	};
 
 	const handleRemoveFavorite = id => event => {
@@ -29,14 +30,10 @@ const CryptoMain = () => {
 		setSearchTerm(event.target.value);
 	};
 
-	const filteredData = useMemo(
-		() =>
-			cData.filter(
-				coin =>
-					coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-					coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-			),
-		[cData, searchTerm]
+	const filteredData = dFavorites.filter(
+		coin =>
+			coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
 	return (
@@ -50,7 +47,7 @@ const CryptoMain = () => {
 					className="w-3/4 md:w-1/2 xl:w-1/4 block mx-auto my-5 p-2 rounded-lg bg-gray-800 text-gray-100"
 				/>
 				{cData.length ? (
-					<div className=" w-full overflow-x-auto 2xl:overflow-x-visible">
+					<div className="w-full overflow-x-auto 2xl:overflow-x-visible">
 						<table className="w-full table-auto">
 							<thead className="text-base text-gray-100 border-b border-gray-700">
 								<tr>
@@ -75,9 +72,6 @@ const CryptoMain = () => {
 										(currentPage - 1) * 25 + 25
 									)
 									.map(coin => {
-										const isFavorite = favorites.some(
-											favorite => favorite == coin.id
-										);
 										return (
 											<tr
 												className="border-b border-gray-700 rounded-3xl hover:cursor-pointer lg:hover:scale-105"
@@ -85,7 +79,9 @@ const CryptoMain = () => {
 												onClick={() => navigate(`/coin/${coin.id}`)}
 											>
 												<td className="py-6 flex justify-center items-center">
-													{isFavorite ? (
+													{dFavorites.some(
+														favorite => favorite.id == coin.id
+													) ? (
 														<FaStar
 															className="size-6 hover:text-[#5EBC67] cursor-pointer text-[#5EBC67]"
 															onClick={event =>
@@ -97,7 +93,7 @@ const CryptoMain = () => {
 													) : (
 														<FaRegStar
 															onClick={event =>
-																handleAddToFavorites(coin.id)(
+																handleAddToFavorites(coin)(
 																	event
 																)
 															}
@@ -280,4 +276,4 @@ const CryptoMain = () => {
 	);
 };
 
-export default CryptoMain;
+export default CryptoFavorties;

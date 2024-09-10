@@ -107,113 +107,238 @@ const CryptoDetails = () => {
 	);
 
 	return (
-		<div className="flex flex-row justify-center mt-10 mx-20">
-			<div className="w-1/3 p-8 m-4">
-				<div className="flex justify-center items-center mb-8">
-					<img
-						src={coin.image.large}
-						alt={coin.name}
-						className="w-10 h-10 mr-4"
-					/>
-					<div className="flex justify-center items-center gap-4">
-						<h1 className="text-3xl">{coin.name}</h1>
-						<h2 className="text-lg text-gray-500">
-							{coin.symbol.toUpperCase()}
-						</h2>
-						<h3 className="text-lg text-gray-500">
-							#{coin.market_cap_rank}
-						</h3>
+		<div className='pb-20'>
+			<div className="flex flex-col lg:flex-row justify-center pt-10 mx-4 lg:mx-20 lg:pt-20 h-full">
+				<div className="w-full lg:w-1/2">
+					<div className="flex justify-center items-center mb-8 flex-col lg:flex-row">
+						<img
+							src={coin.image.large}
+							alt={coin.name}
+							className="w-10 h-10 mr-4"
+						/>
+						<div className="flex justify-center items-center gap-4">
+							<h1 className="text-2xl lg:text-3xl">{coin.name}</h1>
+							<h2 className="text-base lg:text-lg text-gray-500">
+								{coin.symbol.toUpperCase()}
+							</h2>
+							<h3 className="text-base lg:text-lg text-gray-500">
+								#{coin.market_cap_rank}
+							</h3>
+						</div>
+					</div>
+					<p className="text-center text-lg lg:text-xl my-10">
+						Current Price:{' '}
+						{formatCurrency(coin.market_data.current_price[currency])}
+					</p>
+					<div className=" justify-center items-center hidden lg:flex">
+						<div className="flex justify-center flex-col items-start gap-2 ml-12">
+							<p className="">
+								Market Cap:{' '}
+								{formatDigits(coin.market_data.market_cap[currency])}
+							</p>
+							<p>
+								24 Hour Trading Vol:{' '}
+								{formatDigits(coin.market_data.market_cap[currency])}
+							</p>
+							<p>
+								Circulating Supply:{' '}
+								{formatStats(coin.market_data.circulating_supply)}
+							</p>
+							<p>
+								Total Supply:{' '}
+								{formatStats(coin.market_data.total_supply)}
+							</p>
+							<p>
+								All Time High:{' '}
+								{formatCurrency(coin.market_data.ath[currency])}
+							</p>
+							<p>
+								All Time Low:{' '}
+								{formatCurrency(coin.market_data.atl[currency])}
+							</p>
+						</div>
+					</div>
+					<div className="w-full p-4 lg:px-16  hidden xl:flex">
+						<p className="text-left">
+							Description: {descriptionWithoutATags}
+						</p>
 					</div>
 				</div>
-				<p className="text-center text-xl my-10">
-					Current Price:{' '}
-					{formatCurrency(coin.market_data.current_price[currency])}
-				</p>
-				<div className="flex justify-center items-center">
-					<div className="flex justify-center flex-col items-start gap-2">
-						<p className="">
-							Market Cap:{' '}
-							{formatDigits(coin.market_data.market_cap[currency])}
-						</p>
-						<p>
-							24 Hour Trading Vol:{' '}
-							{formatDigits(coin.market_data.market_cap[currency])}
-						</p>
-						<p>
-							Circulating Supply:{' '}
-							{formatStats(coin.market_data.circulating_supply)}
-						</p>
-						<p>
-							Total Supply: {formatStats(coin.market_data.total_supply)}
-						</p>
-						<p>
-							All Time High:{' '}
-							{formatCurrency(coin.market_data.ath[currency])}
-						</p>
-						<p>
-							All Time Low:{' '}
-							{formatCurrency(coin.market_data.atl[currency])}
+				<div className="flex flex-col lg:flex-row w-full lg:w-2/3 lg:hidden">
+					<div className="order-last lg:order-first w-full lg:w-1/2 p-4 lg:p-8 m-4">
+						<div className="flex justify-center items-center">
+							<div className="flex justify-center flex-col items-start gap-2">
+								<p className="">
+									Market Cap:{' '}
+									{formatDigits(coin.market_data.market_cap[currency])}
+								</p>
+								<p>
+									24 Hour Trading Vol:{' '}
+									{formatDigits(coin.market_data.market_cap[currency])}
+								</p>
+								<p>
+									Circulating Supply:{' '}
+									{formatStats(coin.market_data.circulating_supply)}
+								</p>
+								<p>
+									Total Supply:{' '}
+									{formatStats(coin.market_data.total_supply)}
+								</p>
+								<p>
+									All Time High:{' '}
+									{formatCurrency(coin.market_data.ath[currency])}
+								</p>
+								<p>
+									All Time Low:{' '}
+									{formatCurrency(coin.market_data.atl[currency])}
+								</p>
+							</div>
+						</div>
+
+						<p className="text-left my-8">
+							Description: {descriptionWithoutATags}
 						</p>
 					</div>
+					<div className="w-full lg:w-1/2">
+						<Chart options={options} series={series} type="line" />
+						<table className="w-full text-center">
+							<thead className="text-base text-gray-100 border border-gray-700">
+								<tr>
+									<th className="py-2 border border-gray-700">1h</th>
+									<th className="py-2 border border-gray-700">24h</th>
+									<th className="py-2 border border-gray-700">7d</th>
+									<th className="py-2 border border-gray-700">14d</th>
+									<th className="py-2 border border-gray-700">30d</th>
+									<th className="py-2 border border-gray-700">1y</th>
+								</tr>
+							</thead>
+							<tbody className="border border-gray-700">
+								<tr>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_1h_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_24h_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_7d_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_14d_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_30d_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_1y_in_currency[
+												currency
+											]
+										)}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-				<p className="text-left my-8">
-					Description: {descriptionWithoutATags}
-				</p>
+				<div className=" flex-col lg:flex-row lg:w-1/2 hidden lg:flex h-full">
+					<div className="lg:w-full">
+						<Chart options={options} series={series} type="line" />
+						<table className="w-full text-center">
+							<thead className="text-base text-gray-100 border border-gray-700">
+								<tr>
+									<th className="py-2 border border-gray-700">1h</th>
+									<th className="py-2 border border-gray-700">24h</th>
+									<th className="py-2 border border-gray-700">7d</th>
+									<th className="py-2 border border-gray-700">14d</th>
+									<th className="py-2 border border-gray-700">30d</th>
+									<th className="py-2 border border-gray-700">1y</th>
+								</tr>
+							</thead>
+							<tbody className="border border-gray-700">
+								<tr>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_1h_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_24h_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_7d_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_14d_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_30d_in_currency[
+												currency
+											]
+										)}
+									</td>
+									<td className="border border-gray-700">
+										{formatValue(
+											coin.market_data
+												.price_change_percentage_1y_in_currency[
+												currency
+											]
+										)}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-			<div className="w-1/2 p-8 m-4">
-				<Chart options={options} series={series} type="line" />
-				<table className="w-full text-center">
-					<thead className="text-base text-gray-100 border border-gray-700">
-						<tr>
-							<th className="py-2 border border-gray-700">1h</th>
-							<th className="py-2 border border-gray-700">24h</th>
-							<th className="py-2 border border-gray-700">7d</th>
-							<th className="py-2 border border-gray-700">14d</th>
-							<th className="py-2 border border-gray-700">30d</th>
-							<th className="py-2 border border-gray-700">1y</th>
-						</tr>
-					</thead>
-					<tbody className="border border-gray-700">
-						<tr>
-							<td className="border border-gray-700">
-								{formatValue(
-									coin.market_data
-										.price_change_percentage_1h_in_currency[currency]
-								)}
-							</td>
-							<td className="border border-gray-700">
-								{formatValue(
-									coin.market_data
-										.price_change_percentage_24h_in_currency[currency]
-								)}
-							</td>
-							<td className="border border-gray-700">
-								{formatValue(
-									coin.market_data
-										.price_change_percentage_7d_in_currency[currency]
-								)}
-							</td>
-							<td className="border border-gray-700">
-								{formatValue(
-									coin.market_data
-										.price_change_percentage_14d_in_currency[currency]
-								)}
-							</td>
-							<td className="border border-gray-700">
-								{formatValue(
-									coin.market_data
-										.price_change_percentage_30d_in_currency[currency]
-								)}
-							</td>
-							<td className="border border-gray-700">
-								{formatValue(
-									coin.market_data
-										.price_change_percentage_1y_in_currency[currency]
-								)}
-							</td>
-						</tr>
-					</tbody>
-				</table>
+			<div className="w-full lg:w-full p-4 lg:px-16  hidden lg:flex xl:hidden">
+				<p className="text-left">Description: {descriptionWithoutATags}</p>
 			</div>
 		</div>
 	);

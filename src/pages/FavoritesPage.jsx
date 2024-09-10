@@ -1,4 +1,4 @@
-import CryptoFavorties from "../components/CryptoFavorties";
+import CryptoFavorties from "../components/CryptoFavorites";
 
 
 export default function FavPage() {
