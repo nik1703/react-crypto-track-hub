@@ -64,6 +64,13 @@ const CryptoDetails = () => {
 		stroke: {
 			width: 2,
 		},
+		tooltip: {
+			theme: 'dark',
+			style: {
+			  background: '#333',
+			  color: '#fff'
+			}
+		 }
 	};
 
 	const series = [
@@ -136,66 +143,78 @@ const CryptoDetails = () => {
 					</p>
 					<div className=" justify-center items-center hidden lg:flex">
 						<div className="flex justify-center flex-col items-start gap-2 ml-12">
-							<p className="">
+							<p>
 								Market Cap:{' '}
 								{formatDigits(coin.market_data.market_cap[currency])}
 							</p>
+							<div className='border-b border-gray-700 w-full'></div>
 							<p>
 								24 Hour Trading Vol:{' '}
 								{formatDigits(coin.market_data.market_cap[currency])}
 							</p>
+							<div className='border-b border-gray-700 w-full'></div>
 							<p>
 								Circulating Supply:{' '}
 								{formatStats(coin.market_data.circulating_supply)}
 							</p>
+							<div className='border-b border-gray-700 w-full'></div>
 							<p>
 								Total Supply:{' '}
 								{formatStats(coin.market_data.total_supply)}
 							</p>
+							<div className='border-b border-gray-700 w-full'></div>
 							<p>
 								All Time High:{' '}
 								{formatCurrency(coin.market_data.ath[currency])}
 							</p>
+							<div className='border-b border-gray-700 w-full'></div>
 							<p>
 								All Time Low:{' '}
 								{formatCurrency(coin.market_data.atl[currency])}
 							</p>
+							<div className='border-b border-gray-700 w-full'></div>
 						</div>
 					</div>
-					<div className="w-full p-4 lg:px-16  hidden xl:flex">
+					<div className="w-full p-4 lg:px-16 mt-4 hidden xl:flex">
 						<p className="text-left">
 							Description: {descriptionWithoutATags}
 						</p>
 					</div>
 				</div>
 				<div className="flex flex-col lg:flex-row w-full lg:w-2/3 lg:hidden">
-					<div className="order-last lg:order-first w-full lg:w-1/2 p-4 lg:p-8 m-4">
+					<div className="order-last lg:order-first w-full lg:w-1/2 p-4 lg:p-8 mt-4">
 						<div className="flex justify-center items-center">
 							<div className="flex justify-center flex-col items-start gap-2">
 								<p className="">
 									Market Cap:{' '}
 									{formatDigits(coin.market_data.market_cap[currency])}
 								</p>
+								<div className='border-b border-gray-700 w-full'></div>
 								<p>
 									24 Hour Trading Vol:{' '}
 									{formatDigits(coin.market_data.market_cap[currency])}
 								</p>
+								<div className='border-b border-gray-700 w-full'></div>
 								<p>
 									Circulating Supply:{' '}
 									{formatStats(coin.market_data.circulating_supply)}
 								</p>
+								<div className='border-b border-gray-700 w-full'></div>
 								<p>
 									Total Supply:{' '}
 									{formatStats(coin.market_data.total_supply)}
 								</p>
+								<div className='border-b border-gray-700 w-full'></div>
 								<p>
 									All Time High:{' '}
 									{formatCurrency(coin.market_data.ath[currency])}
 								</p>
+								<div className='border-b border-gray-700 w-full'></div>
 								<p>
 									All Time Low:{' '}
 									{formatCurrency(coin.market_data.atl[currency])}
 								</p>
+								<div className='border-b border-gray-700 w-full'></div>
 							</div>
 						</div>
 

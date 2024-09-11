@@ -36,9 +36,23 @@ const CryptoFavorties = () => {
 			coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
+	if (dFavorites.length === 0) {
+		return (
+			<div className="h-screen flex flex-col pt-40 items-center bg-[#00040e] text-gray-100">
+				<h1 className="text-3xl mb-4">You have no favorites yet.</h1>
+				<button
+					onClick={() => navigate('/')}
+					className="text-green-500 underline"
+				>
+					Go to main page to add some
+				</button>
+			</div>
+		);
+	}
+
 	return (
 		<>
-			<section className="px-4 sm:px-10 md:px-20">
+			<section className="px-4 sm:px-10 md:px-20 h-screen">
 				<input
 					type="text"
 					placeholder="Search"
