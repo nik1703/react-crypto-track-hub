@@ -36,7 +36,7 @@ const CryptoDetails = () => {
 	}, [id, currency]);
 
 	if (loading) {
-		return <div className="h-screen text-center text-3xl">Loading...</div>;
+		return <div className="h-screen text-center text-3xl pt-10">Loading...</div>;
 	}
 
 	const options = {

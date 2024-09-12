@@ -267,7 +267,7 @@ const CryptoFavorties = () => {
 						</table>
 					</div>
 				) : (
-					<div className="h-screen text-center text-3xl">Loading...</div>
+					<div className="h-screen text-center text-3xl pt-10">Loading...</div>
 				)}
 				<div>
 					<Pagination
