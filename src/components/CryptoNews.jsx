@@ -13,7 +13,6 @@ const CryptoNews = () => {
 		const fetchNews = async () => {
 			const response = await fetch(newsUrl);
 			const data = await response.json();
-			console.log(data);
 			setNewsItems(data.articles);
 			setLoading(false);
 		};
