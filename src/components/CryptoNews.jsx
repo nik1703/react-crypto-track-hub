@@ -6,8 +6,7 @@ const CryptoNews = () => {
 	const [loading, setLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
 	const newsUrl = import.meta.env.VITE_NEWS_URL;
-	const placeholderImage =
-		'https://via.placeholder.com/600x400?text=Crypto+News';
+	const placeholderImage = import.meta.env.VITE_NEWS_PLACEHOLDER_IMAGE;
 
 	useEffect(() => {
 		const fetchNews = async () => {
